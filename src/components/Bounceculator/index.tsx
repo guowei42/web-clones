@@ -1,35 +1,25 @@
-import { Box, Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import { Box, Container } from "@mui/material";
 import { useState } from "react";
+import CalcDisplay from "./components/CalcDisplay";
+import NumPad from "./components/NumPad";
 
 const Bounceculator = () => {
     const [calcVal, setCalcVal] = useState<number>(0);
 
     return (
-        <Box sx={{ width: "300px", border: "1px solid red" }}>
-            <TextField
-                disabled
-                value={calcVal}
-                fullWidth
-                sx={{ border: "1px solid red" }}
-            />
-            <Grid container spacing={{ xs: 2, md: 3 }}>
-                {Array.from(Array(9)).map((_, index) => (
-                    <Grid
-                        xs={4}
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Button onClick={() => setCalcVal(index + 1)}>
-                            {index + 1}
-                        </Button>
-                    </Grid>
-                ))}
-            </Grid>
-        </Box>
+        <Container
+            sx={{
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <Box sx={{ border: "1px solid black" }}>
+                <CalcDisplay value={calcVal} />
+                <NumPad />
+            </Box>
+        </Container>
     );
 };
 
