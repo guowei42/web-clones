@@ -1,43 +1,11 @@
 import { Box, Card, CardActionArea, CardHeader } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-
-const ideas: IdeaItem[] = [
-    {
-        title: "2048",
-        clickable: false
-    },
-    {
-        title: "Bounceculator",
-        clickable: true
-    },
-    {
-        title: "Cine2Nerdle",
-        clickable: false
-    },
-    {
-        title: "Github Profile Viewer",
-        clickable: false
-    },
-    {
-        title: "Pomodoro Timer",
-        clickable: false
-    },
-    {
-        title: "Recipe Roulette",
-        clickable: false
-    },
-    {
-        title: "Word Search",
-        clickable: false
-    },
-    {
-        title: "Wordle",
-        clickable: false
-    },
-];
-
+import { ideas } from "../../main";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+    const nav = useNavigate();
+
     return (
         <Box
             sx={{
@@ -52,7 +20,10 @@ const Dashboard = () => {
                 {ideas.map((cardItem, index) => (
                     <Grid xs={3} key={index}>
                         <Card>
-                            <CardActionArea disabled={!cardItem.clickable}>
+                            <CardActionArea
+                                disabled={!cardItem.clickable}
+                                onClick={() => nav(cardItem.nav)}
+                            >
                                 <CardHeader title={cardItem.title} />
                             </CardActionArea>
                         </Card>
