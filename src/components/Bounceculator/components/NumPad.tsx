@@ -10,37 +10,39 @@ const numPadData = [
     ["0", ".", "="],
 ];
 
-
 const NumPad = ({
-    handleCalcVal,
+    handleDisplay,
     handleReset,
-    addOpsToDisplay
+    handleDelete,
+    handleResult
 }: {
-    handleCalcVal: (num: number) => void;
+    handleDisplay: (selection: string) => void;
     handleReset: () => void;
-    addOpsToDisplay: (ops: Operation) => void
+    handleDelete: () => void;
+    handleResult: () => void;
 }) => {
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const value = event.currentTarget.textContent;
-        if (!value) {
-            return;
-        }
         if (value == "C") {
             handleReset();
-        } else if (!isNaN(+value)) {
-            handleCalcVal(Number(value));
+        } else if (value == "AC") {
+            handleDelete();
+        } else if (value == "=") {
+            handleResult();
+        } else if (value) {
+            handleDisplay(value);
         }
     };
 
     return (
         <Grid container spacing={1}>
-            {numPadData.flat().map((val) =>
+            {numPadData.flat().map((val, index) =>
                 val === "0" ? (
-                    <Grid xs={6}>
+                    <Grid xs={6} key={index}>
                         <Button onClick={handleButtonClick}>{val}</Button>
                     </Grid>
                 ) : (
-                    <Grid xs={3}>
+                    <Grid xs={3} key={index}>
                         <Button onClick={handleButtonClick}>{val}</Button>
                     </Grid>
                 )

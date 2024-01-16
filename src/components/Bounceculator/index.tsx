@@ -2,37 +2,43 @@ import { Box, Container } from "@mui/material";
 import { useState } from "react";
 import CalcDisplay from "./components/CalcDisplay";
 import NumPad from "./components/NumPad";
-import { Operation } from "./types/CalcQueue";
-
-type DisplayStore = {
-    prev: string;
-    current: string;
-};
 
 const Bounceculator = () => {
-    const [calcVal, setCalcVal] = useState<number>(0);
-    const [display, setDisplay] = useState<DisplayStore>({
-        prev: "",
-        current: "0",
-    });
+    const [display, setDisplay] = useState<string>("0");
     const [isReset, setIsReset] = useState<boolean>(true);
 
-    const handleCalcVal = (num: number) => {
+    const handleDisplay = (selection: string) => {
         if (isReset) {
-            setCalcVal(num);
+            setDisplay(selection)
             setIsReset(false);
         } else {
-            setCalcVal(calcVal * 10 + num);
+            setDisplay((prev) => (prev + selection))
         }
-        setDisplay({ ...display, current: calcVal.toString() });
     };
 
-    const addOpsToDisplay = (ops: Operation) => {};
+    const handleDelete = () => {
+        if (!isReset) {
+            setDisplay((prev) => (prev.slice(0, -1)))
+        }
+    };
+
+    const handleResult = () => {
+        setDisplay((prev) => {
+            try {
+                return eval(prev)
+            } catch (error) {
+                setIsReset(true);
+                return "Error"
+            }
+            
+        })
+    };
 
     const handleReset = () => {
         setIsReset(true);
-        setCalcVal(0);
+        setDisplay("0");
     };
+
 
     return (
         <Container
@@ -44,11 +50,12 @@ const Bounceculator = () => {
             }}
         >
             <Box sx={{ border: "1px solid black" }}>
-                <CalcDisplay value={display.prev + display.current} />
+                <CalcDisplay value={display} />
                 <NumPad
-                    handleCalcVal={handleCalcVal}
+                    handleDisplay={handleDisplay}
                     handleReset={handleReset}
-                    addOpsToDisplay={addOpsToDisplay}
+                    handleDelete={handleDelete}
+                    handleResult={handleResult}
                 />
             </Box>
         </Container>
